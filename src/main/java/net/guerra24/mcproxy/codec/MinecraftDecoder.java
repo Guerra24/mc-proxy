@@ -98,7 +98,9 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
 
 			break;
 		case 2: // Login
+			var rewind = buf.readerIndex();
 			var user = readString(buf).substring(2);
+			buf.readerIndex(rewind);
 			if (!Main.getSettings().getWhitelist().contains(user)) {
 				disconnect(ctx, "Not found in whitelist");
 				return;
