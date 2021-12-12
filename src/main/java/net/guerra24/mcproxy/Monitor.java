@@ -49,16 +49,23 @@ public class Monitor extends Thread {
 			}
 		}
 		System.out.println("Monitor started. Waiting " + Main.getSettings().getSleepTime() + " minutes");
+		int retries = 0;
 		while (Main.running) {
 			try {
 				Thread.sleep(30000);
 			} catch (InterruptedException e) {
 			}
 			if (!Main.rconService.isConnected()) {
-				Main.rconService.disconnect();
-				Main.running = false;
-				Main.ready = false;
-				return;
+				if (retries > 5) {
+					Main.rconService.disconnect();
+					Main.running = false;
+					Main.ready = false;
+					return;
+				}
+				retries++;
+				continue;
+			} else {
+				retries = 0;
 			}
 			var list = PlayerListCommand.names();
 			var result = rcon.sendSync(list);

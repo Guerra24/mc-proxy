@@ -154,25 +154,29 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
 				Main.ready = true;
 			}).start();
 
-			int timeout = 0;
+			//int timeout = 0;
 			while (true) {
 				if (Main.ready)
 					break;
-				if (timeout >= 27500) {
+				/*if (timeout >= 27500) {
 					disconnect(ctx, "Server is taking too long to start... please try again");
 					return;
-				}
+				}*/
 				if (!Main.starting) {
 					disconnect(ctx, "Unable to start instance... please try again in 5 minutes");
 					return;
 				}
-				timeout += 1000;
+				if (Main.running && !Main.ready) {
+					disconnect(ctx, "Instance is starting... please wait");
+					return;
+				}
+				//timeout += 1000;
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 			}
-
+/*
 			Bootstrap b = new Bootstrap();
 			b.group(Main.getWorkerGroup());
 			b.channel(NioSocketChannel.class);
@@ -209,7 +213,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
 						ctx.channel().attr(PROXY_CHANNEL).set(cf.channel());
 					}
 				}
-			});
+			});*/
 			break;
 		}
 	}
