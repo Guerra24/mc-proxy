@@ -67,11 +67,19 @@ public class Monitor extends Thread {
 			} else {
 				retries = 0;
 			}
-			var list = PlayerListCommand.names();
-			var result = rcon.sendSync(list);
-			final var playerList = playerNamesMapper.apply(result);
-			if (playerList.getPlayerNames().size() != 0)
-				watchdog.interrupt();
+			try {
+				var list = PlayerListCommand.names();
+				var result = rcon.sendSync(list);
+				final var playerList = playerNamesMapper.apply(result);
+				if (playerList.getPlayerNames().size() != 0)
+					watchdog.interrupt();
+			} catch (Exception e) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e1) {
+				}
+				Main.rconService.connectBlocking(Duration.ofSeconds(120));
+			}
 		}
 	}
 
