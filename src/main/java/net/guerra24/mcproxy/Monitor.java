@@ -63,7 +63,6 @@ public class Monitor extends Thread {
 					return;
 				}
 				retries++;
-				continue;
 			} else {
 				retries = 0;
 			}

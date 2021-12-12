@@ -143,7 +143,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
 				Main.rconService = new MinecraftRconService(
 						new RconDetails(Main.instanceAddress, Main.getSettings().getRconPort(),
 								Main.getSettings().getRconPassword()),
-						new ConnectOptions(200, Duration.ofSeconds(1), Defaults.CONNECTION_WATCHER_INTERVAL));
+						new ConnectOptions(200, Duration.ofSeconds(1), Duration.ofSeconds(10)));
 
 				Main.rconService.connectBlocking(Duration.ofSeconds(120));
 
