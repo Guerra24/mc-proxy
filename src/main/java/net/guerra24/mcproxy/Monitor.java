@@ -61,6 +61,8 @@ public class Monitor extends Thread {
 					Main.running = false;
 					Main.ready = false;
 					return;
+				} else {
+					Main.rconService.connectBlocking(Duration.ofSeconds(120));
 				}
 				retries++;
 			} else {
@@ -77,7 +79,6 @@ public class Monitor extends Thread {
 					Thread.sleep(10000);
 				} catch (InterruptedException e1) {
 				}
-				Main.rconService.connectBlocking(Duration.ofSeconds(120));
 			}
 		}
 	}
